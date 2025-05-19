@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="dark">
+  
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="{% static 'base/css/index.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+
+    <title>EPIcontrol</title>
+  </head>
+  <body>
+
+    <div class="navbar bg-base-300 shadow-sm">
+      <div class="ps-4">
+        <a class="text-lg font-bold">EPIcontrol</a>
+      </div>
+      <div class="flex grow justify-end px-2">
+        <div class="flex items-stretch">
+          <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost rounded-field border-base-100">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block h-5 w-5 stroke-current"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path> </svg>
+            </div>
+            <ul
+              tabindex="0"
+              class="menu dropdown-content bg-base-100 rounded-box z-1 mt-4 w-52 p-2 shadow-sm">
+              <li><a>Settings</a></li>
+              <li><a>Log out</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div role="tablist" class="tabs tabs-box">
+      <a role="tab" class="tab " href="{% url 'ca_add' %}">CA</a>
+      
+      <a role="tab" class="tab " href="{% url 'epi_add' %}">EPI</a>
+      
+      <a role="tab" class="tab tab-active" href="{% url 'colaborador_add' %}">COLABORADOR</a>
+      
+      <a role="tab" class="tab " href="{% url 'estoque_add' %}">ESTOQUE</a>
+      
+      <a role="tab" class="tab " href="{% url 'entrega_add' %}">ENTREGA</a>
+     
+    </div>
+    
+    <div class="overflow-x-auto rounded-box border border-base-content/10 bg-base-200">
+      <table class="table">
+        <!-- head -->
+        <thead>
+          <tr>          
+            <th></th>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Matricula</th>
+            <th>Cargo</th>
+            <th>Setor</th>
+            <th>Data de Admissão</th>
+          </tr>
+          <tr>
+            <button class="btn" popovertarget="popover-1" style="anchor-name:--anchor-1">
+              Adicionar
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="#57e389" d="M10 1c-5 0-9 4-9 9s4 9 9 9s9-4 9-9s-4-9-9-9m0 16c-3.9 0-7-3.1-7-7s3.1-7 7-7s7 3.1 7 7s-3.1 7-7 7m1-11H9v3H6v2h3v3h2v-3h3V9h-3z" class="st0"/></svg>
+            </button>
+            <ul class="dropdown menu w-90 rounded-box bg-base-100 shadow-sm"
+                popover id="popover-1" style="position-anchor:--anchor-1">
+              <li><a>
+                <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+                  <legend class="fieldset-legend">Adicionar Colaborador </legend>
+                  <form action="{% url 'colaborador_add' %}" method="POST"> {% csrf_token %}
+                      
+                    <label class="label">Nome:</label>
+                    <input type="text" class="input" name="nome" placeholder="Nome do Colaborador" required/>
+                      
+                    <label class="label">CPF:</label>
+                    <input type="text" class="input" name="cpf" placeholder="CPF do Colaborador" />
+                      
+                    <label class="label">Matricula:</label>
+                    <input type="text" class="input" name="matricula" placeholder="Matricula do Colaborador" />
+
+                    <label class="label">Cargo:</label>
+                    <input type="text" class="input" name="cargo" placeholder="Cargo do Colaborador" />
+
+                    <label class="label">Setor:</label>
+                    <input type="text" class="input" name="setor" placeholder="Setor do Colaborador" />
+
+                    <label class="label">Data de Admissão:</label>
+                    <input type="date" class="input" name="data_admissao" placeholder="Admissão do Colaborador" />
+                      
+                    <input type="submit" value="Enviar" class="btn" />
+                  </form>
+                </fieldset>
+              </a></li>
+            </ul>             
+          </tr>  
+        </thead>
+        <tbody>
+          {% for colaborador in colaboradores %}
+          <tr>
+            <td>
+              <button class="btn">
+                Editar
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="#f8e45c" d="m13.89 3.39l2.71 2.72c.46.46.42 1.24.03 1.64l-8.01 8.02l-5.56 1.16l1.16-5.58s7.6-7.63 7.99-8.03c.39-.39 1.22-.39 1.68.07m-2.73 2.79l-5.59 5.61l1.11 1.11l5.54-5.65zm-2.97 8.23l5.58-5.6l-1.07-1.08l-5.59 5.6z"/></svg>
+              </button>
+
+                <a href="{% url 'colaborar_delete' colaborador.id%}" class="btn">
+                  Remover
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="#ed333b" d="M10 2c4.42 0 8 3.58 8 8s-3.58 8-8 8s-8-3.58-8-8s3.58-8 8-8m5 11l-3-3l3-3l-2-2l-3 3l-3-3l-2 2l3 3l-3 3l2 2l3-3l3 3z"/></svg>
+                </a>
+            </td>
+            <td>{{colaborador.nome}}</td>
+            <td>{{colaborador.cpf}}</td>
+            <td>{{colaborador.matricula}}</td>
+            <td>{{colaborador.cargo}}</td>
+            <td>{{colaborador.setor}}</td>
+            <td>{{colaborador.data_admissao}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </body>
+</html>
